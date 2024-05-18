@@ -1,0 +1,70 @@
+<!-- <script src="/public/js/panier.js"></script> -->
+
+<div class="corps">
+    <div>
+        <h1><%= type_vet %></h1>
+    </div>
+    <div class="organes">
+        <%
+        function isIn(list, element) {
+            for (var i = 0; i < list.length; i++) {
+                if (list[i][0].nom == element.nom) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+        const vetements = items;
+        var vetSansDoublon = [];
+        var counter = -1;
+        for (var i = 0; i < vetements.length; i++) {
+            counter = isIn(vetSansDoublon, vetements[i]);
+            if (counter == -1) {
+                vetSansDoublon.push([vetements[i]]);
+            } else {
+                vetSansDoublon[counter].push(vetements[i]);
+            }
+        }
+        function hasStock(list) {
+            for (var i = 0; i < list.length; i++) {
+                for (var j = 0; j < list[j].length; j++) {
+                    if (list[i][j].stock > 0) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        for (var i = 0; i < vetSansDoublon.length; i++) {%>
+            <div class="card">  
+                <div>
+                    <img src="/public<%=vetSansDoublon[i][0].chemin%>">
+                </div>
+                <div class="card-info">
+                    <p id="clothe-name"><%= vetSansDoublon[i][0].nom%></p>
+                    <p id="clothe-price"><%= vetSansDoublon[i][0].prix %> €</p>
+                    <select name="vetement_id" form="panier<%=i%>" class="clothe-size">
+                        <%
+                        for(var j = 0; j < vetSansDoublon[i].length; j++) {
+                            if (vetSansDoublon[i][j].stock > 0) {%>
+                                <option value="<%=vetSansDoublon[i][j].id%>">
+                                    <%= vetSansDoublon[i][j].taille+"("+vetSansDoublon[i][j].stock+")"%>
+                                </option>
+                            <%    
+                            }
+                        }%>
+                    </select>
+                    <%
+                    if (hasStock(vetSansDoublon)) {%>
+                        <form action="#" method="POST" id="panier<%=i%>">
+                            <button class="clothe-buy" type="submit">Ajouter au panier</button>
+                        </form>
+                    <%
+                    }%>
+                </div>
+            </div>
+        <%
+        }%>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Mon panier</title>
+	<link href="/public/css/style.css" rel="stylesheet" type="text/css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<header>
+	<%- include('../partials/header', categories, total, search)%>
+</header>
+
+<div id="pan">
+	<div id="left-side">
+		<h1>Mon panier</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Taille</th>
+					<th>Prix unitaire</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% //var total=0;
+						for (var i=0; i < vetements.length; i++) {
+							if (vetements[i] != null) {
+							//total +=parseFloat(vetements[i].prix) %>
+
+								<tr>
+									<td>
+										<%= vetements[i].nom %>
+									</td>
+									<td>
+										<%= vetements[i].taille %>
+									</td>
+									<td>
+										<%= vetements[i].prix %> €
+									</td>
+									<td>
+										<form method="post" action="">
+											<input type="hidden" name="remove"
+											value="<%=basketContent[i]%>">
+											<button id="basket-remove-button"
+											type="submit">
+											supprimer
+											</button>
+										</form>
+									</td>
+								</tr>
+							<%
+							}	
+						}%>
+			</tbody>
+		</table>
+		<form method="post" action="">
+			<input type="hidden" name="remove" value=-1>
+			<button id="reset" type="submit">Retirer</button>
+		</form>
+	</div>
+	<div id="right-side">
+		<h2>Total</h2>
+		<div id="total-price">
+			<h1>
+				<%= total %> €
+			</h1>
+		</div>
+		<form method="post" action="">
+			<label for="nom">Nom:</label>
+			<input type="text" id="nom" name="nom" required>
+			<br>
+			<label for="email">Adresse e-mail:</label>
+			<input type="email" id="email" name="email" required>
+			<br>
+			<label for="adresse">Adresse de livraison:</label>
+			<input type="text" id="adresse" name="adresse" required>
+			<br>
+			<label for="telephone">Numéro de téléphone:</label>
+			<input type="tel" id="telephone" name="telephone" required>
+			<br>
+			<input type="hidden" name="remove" value=1>
+			<button id="valide" type="submit">Valider</button>
+		</form>
+	</div>
+</div>
+
+<footer>
+	<%- include('../partials/footer');%>
+</footer>
+
+</html>

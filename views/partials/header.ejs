@@ -1,0 +1,108 @@
+<nav>
+    <div class="list-button-container">
+        <button id="list-button">
+            <div id="open-list-button-img">
+                <%- include("icons/menu_list_icon.svg") %>
+            </div>
+            <div id="close-list-button-img">
+                <%- include("icons/exit_icon.svg")%>
+            </div>
+        </button>
+    </div>
+    <div class="search-bar-container">
+        <textarea id="search-bar" rows="1"name="search" maxlength="18" minlength="0"></textarea>
+    </div>
+    <div class="search-result-container" id="parent-search-ul">
+        <ul id="search-ul">
+        </ul>
+    </div>
+    <div class="list-container" id="categories">
+        <ul>
+            <%
+                for (var i = 0; i < categories.length; i++) {
+                %>
+                    <li id="li<%=i%>">
+                        <a class="clothes-links" href="/swagger/body/<%=categories[i]%>"><%=categories[i]%></a>
+                    </li>
+                <% 
+                }
+            %>
+        </ul>
+    </div>
+    <div class="title-container">
+        <a href="/swagger">
+            <div class="title-img">
+                <%- include("icons/logo-white.svg")%> 
+            </div>          
+        </a>
+    </div>
+    <div class="basket-container">
+        <a href="/swagger/panier">
+            <%- include("icons/basket_icon.svg") %>
+        </a>
+    </div>
+    <div class="price-container">
+        <p id="prixTotal">
+            Total : <%= total %>
+        </p>
+    </div>
+    
+    
+    <script>
+        var panelOpened = false;
+        var openImg = document.getElementById("open-list-button-img");
+        var closeImg = document.getElementById("close-list-button-img");
+        var list = document.getElementById("categories");
+        var size = 30;
+        document.getElementById("list-button").addEventListener("mousedown",
+        function() {
+            if (window.innerWidth < 750) {
+                size = 50;
+            } else {
+                size = 30;
+            }
+            if (panelOpened) {
+                list.style.left = "-" + 50 + "%";         
+                panelOpened = false;
+                openImg.style.display = "flex";
+                closeImg.style.display = "none";
+            } else {
+                list.style.width = size + "%";
+                list.style.left = "0px";
+                panelOpened = true;
+                openImg.style.display = "none";
+                closeImg.style.display = "flex";
+            }
+        });
+        var searchList = [];
+        <%
+        for (var i = 0; i < search.length; i++) {
+            %>searchList.push("<%= search[i] %>");<%
+        }
+        %>
+        function removeAll() {
+            var myList = document.getElementById("search-ul");
+            myList.innerHTML = '';
+        }
+        var listSearch = document.getElementById("search-ul");
+        var parentList = document.getElementById("parent-search-ul");
+        var textarea = document.getElementById("search-bar");
+        textarea.addEventListener("input", function() {
+            if (textarea.value == "") {
+                parentList.style.display = "none";
+                console.log("Heyyy");
+            } else {
+                parentList.style.display = "block";
+            }
+            removeAll();
+            for (var i = 0; i < searchList.length; i++) {
+                if (searchList[i].includes(textarea.value) && textarea.value != "") {
+                    var newElement = document.createElement("LI");
+                    newElement.innerHTML = searchList[i];
+                    listSearch.appendChild(newElement);
+                }
+            }            
+        });
+    </script>
+
+</nav>
